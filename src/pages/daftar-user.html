@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar User</title>
+    <link rel="stylesheet" href="../css/output.css">
+</head>
+
+<body class="bg-gray-100">
+    <nav class="bg-white border-gray-200 dark:bg-purple-900 mb-10">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+            <a href="https://flowbite.com" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">RSUD ALOEI
+                    SABOE</span>
+            </a>
+            <div class="flex items-center space-x-6 rtl:space-x-reverse">
+                <a href="dashboard.html" class="bg-blue-50 text-blue-500 py-2 px-4 rounded-lg font-semibold">Antrian</a>
+                <button class="bg-red-100 text-red-800 py-2 px-4 rounded-lg font-semibold" id="btn-logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="my-alert"
+        class="hidden items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+        role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor" viewBox="0 0 20 20">
+            <path
+                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        <span class="sr-only">Info</span>
+        <div></div>
+    </div>
+
+    <div class="px-10">
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-lg text-left rtl:text-right text-purple-500">
+                <thead class="text-xl text-gray-200 uppercase bg-purple-500 font-semibold">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            No
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Nama
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Username
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Loket
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Jenis Kelamin
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Aksi
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="list-users"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/mainhandle.js"></script>
+    <script src="../js/route.js"></script>
+    <script src="../js/users.js"></script>
+
+</body>
+
+</html>

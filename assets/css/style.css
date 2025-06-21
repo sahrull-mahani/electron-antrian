@@ -1,0 +1,63 @@
+/* Definisi utility class kustom Anda sebelumnya, jika ada */
+@layer utilities {
+  .slide-up-and-hide {
+    top: -100vh;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* Gaya untuk pseudo-element yang akan menjadi latar belakang */
+#background-theme::before {
+  content: '';
+  /* Penting untuk pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../assets/img/landscape.jpg');
+  background-size: cover;
+  background-position: center;
+  /* Opsional: untuk menempatkan gambar di tengah */
+  z-index: -1;
+  /* Penting: Letakkan di belakang konten utama */
+
+  /* Terapkan filter di sini */
+  filter: brightness(50%) grayscale(50%);
+  /* 50% lebih gelap DAN 50% grayscale */
+  /* Atau hanya salah satu, contoh: filter: brightness(50%); */
+}
+
+/* Jika Anda ingin transisi pada filter juga (misalnya saat elemen muncul/hilang) */
+#background-theme::before {
+  transition: filter 1s ease-out;
+  /* Animasi filter saat berubah */
+}
+
+/* Jika Anda ingin filter berubah saat elemen utama disembunyikan (opsional) */
+/* Contoh: saat slide-up-and-hide aktif, filter background menjadi lebih gelap lagi */
+/* #background-theme.slide-up-and-hide::before {
+    filter: brightness(25%) grayscale(75%);
+} */
+
+body::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #F5F5F5;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear,
+      left bottom,
+      left top,
+      color-stop(0.44, rgb(122, 153, 217)),
+      color-stop(0.72, rgb(73, 125, 189)),
+      color-stop(0.86, rgb(28, 58, 148)));
+}
