@@ -12,16 +12,12 @@ npm i
 npm run start:dev
 ```
 
-## Support, Apresiasi ☕ 🤑 :
-### BNI
+3. Build
+- Windows:
 ```javascript
-0618459066
+npm run package:win
 ```
-### BRI
+- Linux:
 ```javascript
-202301010987533
-```
-### BSG
-```javascript
-00702110216743
+npm run package:linux
 ```

@@ -1,6 +1,6 @@
 {
   "name": "appdesaelectron",
-  "productName": "SIPASTI",
+  "productName": "ANTRIAN-MSM",
   "author": "msm",
   "version": "1.0.0",
   "description": "Aplikasi manajemen surat daerah desa boroko!",
@@ -9,13 +9,10 @@
     "start": "electron-forge start",
     "start:nodemon": "nodemon --exec electron .",
     "start:dev": "concurrently \"npm run dev\" \"npm run start:nodemon\"",
-    "build": "electron-builder",
     "dev": "npx tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch",
-    "finale": "npx tailwindcss -o ./src/css/final.css --minify",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "package:win": "electron-packager . app-desa --overwrite --asar --platform=win32 --arch=x64 --icon=assets/img/appicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"SIPASTI\"",
-    "package:linux": "electron-packager . app-desa --overwrite --asar --platform=linux --arch=x64 --icon=assets/img/appicon.png --prune=true --out=release-builds --executable-name=SIPASTI"
+    "finale": "npx tailwindcss -o ./src/css/output.css --minify",
+    "package:win": "concurrently \"npm run finale\" electron-packager . app-desa --overwrite --asar --platform=win32 --arch=x64 --icon=assets/img/appicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ANTRIAN-MSM\"",
+    "package:linux": "concurrently \"npm run finale\" electron-packager . app-desa --overwrite --asar --platform=linux --arch=x64 --icon=assets/img/LOGO_KOTA_GORONTALO.png --prune=true --out=release-builds --executable-name=ANTRIAN-MSM"
   },
   "keywords": [],
   "license": "ISC",
