@@ -21,3 +21,7 @@ npm run package:win
 ```javascript
 npm run package:linux
 ```
+- Mac:
+```javascript
+npm run package:mac
+```

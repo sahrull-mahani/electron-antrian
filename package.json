@@ -12,7 +12,8 @@
     "dev": "npx tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch",
     "finale": "npx tailwindcss -o ./src/css/output.css --minify",
     "package:win": "concurrently \"npm run finale\" electron-packager . app-desa --overwrite --asar --platform=win32 --arch=x64 --icon=assets/img/appicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ANTRIAN-MSM\"",
-    "package:linux": "concurrently \"npm run finale\" electron-packager . app-desa --overwrite --asar --platform=linux --arch=x64 --icon=assets/img/LOGO_KOTA_GORONTALO.png --prune=true --out=release-builds --executable-name=ANTRIAN-MSM"
+    "package:linux": "concurrently \"npm run finale\" electron-packager . app-desa --overwrite --asar --platform=linux --arch=x64 --icon=assets/img/LOGO_KOTA_GORONTALO.png --prune=true --out=release-builds --executable-name=ANTRIAN-MSM",
+    "package:mac": "concurrently \"npm run finale\" electron-packager . \"Antrian-MSM\" --platform=darwin --arch=x64 --icon=assets/img/LOGO_KOTA_GORONTALO.icns --out=release-builds --overwrite --asar --prune=true --executable-name=\"ANTRIAN-MSM\""
   },
   "keywords": [],
   "license": "ISC",
