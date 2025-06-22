@@ -1,9 +1,11 @@
 const sqlite3 = require('sqlite3').verbose()
 const path = require('path')
 const bcrypt = require('bcryptjs');
+const { app } = require('electron');
 const SALT_ROUNDS = 10; // Tingkat kesulitan hashing
 
-const DB_PATH = path.join(__dirname, 'database.sqlite')
+// const DB_PATH = path.join(__dirname, 'database.sqlite')
+const DB_PATH = path.join(app.getPath('userData'), 'database.sqlite')
 
 let db = new sqlite3.Database(DB_PATH, (err) => {
     if (err) {
