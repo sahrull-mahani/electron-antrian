@@ -10,6 +10,30 @@ const clear_skipped_queue = document.getElementById('clear-skipped-queue')
 const reset_queue = document.getElementById('reset-queue')
 const button_list_users = document.getElementById('btn-list-users')
 const audio = new Audio('../audio/tingtung.mp3')
+const audio_nomor_antrian = new Audio('../audio/speech antrian/nomor antrian.mp3')
+const loket_penerimaan_obat = new Audio('../audio/speech antrian/menuju ke loket penerimaan obat.mp3')
+
+// Fungsi untuk memutar sequence audio
+function playAudioSequence(audioKeys) {
+    if (audioKeys.length === 0) return
+
+    const currentAudio = new Audio('../audio/speech antrian/' + audioKeys[0] + '.mp3')
+    if (!currentAudio) {
+        console.error(`Audio ${audioKeys[0]} tidak ditemukan`)
+        return
+    }
+
+    currentAudio.play()
+        .then(() => console.log(`Audio ${audioKeys[0]} berhasil diputar`))
+        .catch(error => console.error(`Gagal memutar audio ${audioKeys[0]}:`, error))
+
+    setTimeout(() => {
+        const remainingAudios = audioKeys.slice(1)
+        if (remainingAudios.length > 0) {
+            playAudioSequence(remainingAudios)
+        }
+    }, 700);
+}
 
 const loginSession = JSON.parse(localStorage.getItem('login'))
 const { result } = loginSession
@@ -19,17 +43,34 @@ if (result.role > 1) {
 }
 
 const callAudio = (nomor) => {
+    let numbers = [1]
+    if (nomor < 20) {
+        numbers = [nomor]
+    } else if (nomor >= 20 && nomor % 10 === 0 && nomor < 100) {
+        numbers = String(nomor).split('').map(Number).splice(1, 0, 'puluh')
+    } else if (nomor == 100) {
+        numbers = [100]
+    } else if (nomor > 100 && nomor < 120) {
+        numbers = [100]
+        numbers.push(nomor)
+    } else if (nomor >= 121 && nomor < 1000){
+        numbers = [100]
+        numbers.push(...String(nomor).split('').map(Number).slice(1))
+    }
+
+    numbers.push('menuju ke loket penerimaan obat')
+
     audio.play()
         .then(() => console.log("Audio berhasil diputar"))
         .catch(error => console.error("Gagal memutar audio:", error))
+
     audio.onended = function () {
-        try {
-            responsiveVoice.speak(`Nomor antrian ${nomor} menuju ${result.loket}`, result.jenis_kelamin == "Female" ?
-                "Indonesian Female" : "Indonesian Male")
-        } catch (error) {
-            console.log(error)
-            dangerAlert('Suara tidak dapat dijangkau')
-        }
+        audio_nomor_antrian.play()
+            .then(() => console.log("Audio berhasil diputar"))
+            .catch(error => console.error("Gagal memutar audio:", error))
+        setTimeout(() => {
+            playAudioSequence(numbers)
+        }, 1300);
     }
 }
 
@@ -182,71 +223,65 @@ button_call_again.addEventListener('click', async function () {
 button_next.addEventListener('click', async function () {
     let nomor = parseInt(nomor_antrian.textContent)
     const { id } = result
-    if (confirm(`Panggil nomor ${nomor + 1} ?`)) {
-        nomor_antrian.textContent = nomor + 1
+    nomor_antrian.textContent = nomor + 1
 
-        const currentDate = new Date()
-        const dateFormatter = new Intl.DateTimeFormat('en-CA')
-        const timeFormatter = new Intl.DateTimeFormat('en-US', {
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        })
+    const currentDate = new Date()
+    const dateFormatter = new Intl.DateTimeFormat('en-CA')
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    })
 
-        const datePart = dateFormatter.format(currentDate)
-        const timePart = timeFormatter.format(currentDate)
+    const datePart = dateFormatter.format(currentDate)
+    const timePart = timeFormatter.format(currentDate)
 
-        const saveAntrian = {
-            tanggal: datePart,
-            no_antrian: nomor + 1,
-            status: 0,
-            updated_at: `${datePart} ${timePart}`,
-            id_user: id
-        }
-
-        await ipcRenderer.invoke('add-queue', saveAntrian)
-
-        button_call_again.disabled = false
-        button_skip.disabled = false
-        // callAudio(nomor + 1)
-        sendWS(nomor + 1)
+    const saveAntrian = {
+        tanggal: datePart,
+        no_antrian: nomor + 1,
+        status: 0,
+        updated_at: `${datePart} ${timePart}`,
+        id_user: id
     }
+
+    await ipcRenderer.invoke('add-queue', saveAntrian)
+
+    button_call_again.disabled = false
+    button_skip.disabled = false
+    // callAudio(nomor + 1)
+    sendWS(nomor + 1)
 })
 
 button_skip.addEventListener('click', async function () {
     const nomor = parseInt(nomor_antrian.textContent)
+    await ipcRenderer.invoke('update-queue', { status: 2, id: nomor })
 
-    if (confirm(`Lewati nomor ${nomor} ini?`)) {
+    const currentDate = new Date()
+    const dateFormatter = new Intl.DateTimeFormat('en-CA')
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    })
 
-        await ipcRenderer.invoke('update-queue', { status: 2, id: nomor })
+    const datePart = dateFormatter.format(currentDate)
+    const timePart = timeFormatter.format(currentDate)
 
-        const currentDate = new Date()
-        const dateFormatter = new Intl.DateTimeFormat('en-CA')
-        const timeFormatter = new Intl.DateTimeFormat('en-US', {
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        })
-
-        const datePart = dateFormatter.format(currentDate)
-        const timePart = timeFormatter.format(currentDate)
-
-        const saveAntrian = {
-            tanggal: datePart,
-            no_antrian: nomor + 1,
-            status: 0,
-            updated_at: `${datePart} ${timePart}`,
-            id_user: result.id
-        }
-
-        await ipcRenderer.invoke('add-queue', saveAntrian)
-
-        // callAudio(nomor + 1)
-        sendWS(nomor + 1)
-        getProgressData()
+    const saveAntrian = {
+        tanggal: datePart,
+        no_antrian: nomor + 1,
+        status: 0,
+        updated_at: `${datePart} ${timePart}`,
+        id_user: result.id
     }
+
+    await ipcRenderer.invoke('add-queue', saveAntrian)
+
+    // callAudio(nomor + 1)
+    sendWS(nomor + 1)
+    getProgressData()
 })
 
 clear_skipped_queue.addEventListener('click', async function () {

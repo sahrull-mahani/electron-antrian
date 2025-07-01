@@ -4,6 +4,7 @@ const path = require('path')
 const api = require('./api')
 const express = require('express')
 const { createServer } = require('node:http')
+const { exec } = require('node:child_process')
 const { Server } = require('socket.io')
 
 // Buat server HTTP dan Socket.io
@@ -179,6 +180,14 @@ function createWindow() {
         }
         if (input.control && input.key.toLowerCase() === 't') {
             event.preventDefault()
+            // const command = `spd-say -l id "nomor antrian 132 menuju ke loket pemberian obat"`; // Construct the command
+            // exec(command, (error, stdout, stderr) => {
+            //     if (error) {
+            //         console.error(`Error speaking: ${error}`);
+            //         return;
+            //     }
+            //     console.log(`Speech output: ${stdout}`);
+            // })
             win.webContents.send('play', 'check sound')
         }
     })

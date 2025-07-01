@@ -4,6 +4,26 @@
   "author": "msm",
   "version": "1.0.0",
   "description": "Aplikasi manajemen surat daerah desa boroko!",
+  "build": {
+    "appId": "com.msm.antrianmsm",
+    "productName": "ANTRIAN-MSM",
+    "copyright": "Copyright © 2024 MSM",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/img/appicon.ico",
+      "publisherName": "MSM Developer",
+      "legalTrademarks": "ANTRIAN-MSM™",
+      "verifyUpdateCodeSignature": false
+    },
+    "extraResources": [
+      "database.sqlite",
+      "assets/**"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -11,6 +31,7 @@
     "start:dev": "concurrently \"npm run dev\" \"npm run start:nodemon\"",
     "dev": "npx tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch",
     "finale": "npx tailwindcss -o ./src/css/output.css --minify",
+    "build:win": "concurrently \"npm run finale\" \"electron-builder --win --x64\"",
     "package:win": "concurrently \"npm run finale\" \"electron-packager . antrian --overwrite --asar --platform=win32 --arch=x64 --icon=assets/img/appicon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"ANTRIAN-MSM\" --extra-resource=database.sqlite\"",
     "package:linux": "concurrently \"npm run finale\" \"electron-packager . antrian --overwrite --asar --platform=linux --arch=x64 --icon=assets/img/LOGO_KOTA_GORONTALO.png --prune=true --out=release-builds --executable-name=ANTRIAN-MSM --extra-resource=database.sqlite\"",
     "package:mac": "concurrently \"npm run finale\" \"electron-packager . \"Antrian-MSM\" --platform=darwin --arch=x64 --icon=assets/img/LOGO_KOTA_GORONTALO.icns --out=release-builds --overwrite --asar --prune=true --executable-name=\"ANTRIAN-MSM\" --extra-resource=database.sqlite\""
@@ -28,6 +49,7 @@
     "@electron/fuses": "^1.8.0",
     "concurrently": "^9.1.2",
     "electron": "^29.1.4",
+    "electron-builder": "^26.0.12",
     "electron-packager": "^17.1.2",
     "electron-rebuild": "^3.2.9",
     "nodemon": "^3.1.9",
